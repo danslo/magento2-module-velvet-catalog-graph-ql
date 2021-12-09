@@ -9,7 +9,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Directory\Model\Currency;
-use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\DataObject;
 
 class ItemTransformer implements ItemTransformerInterface
 {
@@ -20,7 +20,7 @@ class ItemTransformer implements ItemTransformerInterface
         $this->currency = $currency;
     }
 
-    public function transform(AbstractModel $model, array $data): array
+    public function transform(DataObject $model, array $data): array
     {
         /** @var $model Product */
         $data['price'] = $this->currency->format($model->getPrice(), [], false);
