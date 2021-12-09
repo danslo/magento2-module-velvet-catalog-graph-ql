@@ -1,0 +1,19 @@
+enum ProductStatus {
+    Enabled
+    Disabled
+}
+
+type VelvetGridProduct {
+    entity_id: Int!
+    name: String!
+    sku: String!
+    type_id: String!
+    price: String!
+    quantity: Int!
+    visibility: String!
+    status: ProductStatus!
+}
+
+type Query {
+    productGrid(input: GridInput): GridOutput! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Grid")
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Danslo\VelvetGraphQl\Model\GraphQl\GridItemUnionReader">
+        <arguments>
+            <argument name="gridItemTypes" xsi:type="array">
+                <item name="VelvetGridProduct" xsi:type="string">VelvetGridProduct</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

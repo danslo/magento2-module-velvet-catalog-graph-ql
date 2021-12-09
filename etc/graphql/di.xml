@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Danslo\VelvetCatalogGraphQl\Model\Resolver\Product\Grid" type="Danslo\VelvetGraphQl\Model\Resolver\Grid">
+        <arguments>
+            <argument name="defaultOrderField" xsi:type="string">entity_id</argument>
+            <argument name="schemaType" xsi:type="string">VelvetGridProduct</argument>
+            <argument name="collectionFactoryType" xsi:type="string">Magento\Catalog\Model\ResourceModel\Product\CollectionFactory</argument>
+            <argument name="aclResource" xsi:type="string">Magento_Catalog::products</argument>
+            <argument name="collectionProcessor" xsi:type="object">Danslo\VelvetCatalogGraphQl\Model\Resolver\Grid\CollectionProcessor</argument>
+            <argument name="itemTransformer" xsi:type="object">Danslo\VelvetCatalogGraphQl\Model\Resolver\Grid\ItemTransformer</argument>
+        </arguments>
+    </virtualType>
+</config>
