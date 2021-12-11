@@ -14,6 +14,27 @@ type VelvetGridProduct {
     status: ProductStatus!
 }
 
+type VelvetAttribute {
+    label: String!
+    value: String
+    code: String!
+    options: [String!]
+}
+
+type VelvetAttributeGroup {
+    label: String!
+    attributes: [VelvetAttribute!]!
+}
+
+type VelvetProduct {
+    entity_id: Int!
+    attribute_set_id: Int!
+    type_id: Int!
+    sku: String!
+    attribute_groups: [VelvetAttributeGroup!]!
+}
+
 type Query {
     productGrid(input: GridInput): GridOutput! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Grid")
+    productView(product_id: Int!): VelvetProduct! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\View")
 }
