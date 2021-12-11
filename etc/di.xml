@@ -8,4 +8,20 @@
             </argument>
         </arguments>
     </type>
+
+    <virtualType name="Danslo\VelvetCatalogGraphQl\Model\GraphQl\TableReader\Product" type="Danslo\VelvetGraphQl\Model\GraphQl\TableReader">
+        <arguments>
+            <argument name="schemaType" xsi:type="string">VelvetProduct</argument>
+            <argument name="tableName" xsi:type="string">catalog_product_entity</argument>
+            <argument name="generateInputType" xsi:type="boolean">false</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Magento\Framework\GraphQlSchemaStitching\Reader">
+        <arguments>
+            <argument name="readers" xsi:type="array">
+                <item name="productTableReader" xsi:type="object">Danslo\VelvetCatalogGraphQl\Model\GraphQl\TableReader\Product</item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>

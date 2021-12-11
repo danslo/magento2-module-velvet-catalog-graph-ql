@@ -27,10 +27,6 @@ type VelvetAttributeGroup {
 }
 
 type VelvetProduct {
-    entity_id: Int!
-    attribute_set_id: Int!
-    type_id: Int!
-    sku: String!
     attribute_groups: [VelvetAttributeGroup!]!
 }
 
