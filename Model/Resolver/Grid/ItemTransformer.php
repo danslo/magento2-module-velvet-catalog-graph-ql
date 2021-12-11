@@ -10,6 +10,7 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\DataObject;
+use Magento\Tests\NamingConvention\true\string;
 
 class ItemTransformer implements ItemTransformerInterface
 {
@@ -20,36 +21,39 @@ class ItemTransformer implements ItemTransformerInterface
         $this->currency = $currency;
     }
 
+    private function getVisibilityLabel(int $visibility): string
+    {
+        switch ($visibility) {
+            case Visibility::VISIBILITY_NOT_VISIBLE:
+                return 'Not Visible';
+            case Visibility::VISIBILITY_IN_SEARCH:
+                return 'Search';
+            case Visibility::VISIBILITY_IN_CATALOG:
+                return 'Catalog';
+            case Visibility::VISIBILITY_BOTH:
+                return 'Search and Catalog';
+        }
+        return 'Unknown';
+    }
+
+    private function getStatusLabel(int $status): string
+    {
+        switch ($status) {
+            case Status::STATUS_ENABLED:
+                return 'Enabled';
+            case Status::STATUS_DISABLED:
+                return 'Disabled';
+        }
+        return 'Unknown';
+    }
+
     public function transform(DataObject $model, array $data): array
     {
         /** @var $model Product */
         $data['price'] = $this->currency->format($model->getPrice(), [], false);
-
         $data['quantity'] = (int) $model->getQty();
-
-        switch ($model->getVisibility()) {
-            case Visibility::VISIBILITY_NOT_VISIBLE:
-                $data['visibility'] = 'Not Visible';
-                break;
-            case Visibility::VISIBILITY_IN_SEARCH:
-                $data['visibility'] = 'Search';
-                break;
-            case Visibility::VISIBILITY_IN_CATALOG:
-                $data['visibility'] = 'Catalog';
-                break;
-            case Visibility::VISIBILITY_BOTH:
-                $data['visibility'] = 'Search and Catalog';
-                break;
-        }
-
-        switch ($model->getStatus()) {
-            case Status::STATUS_ENABLED:
-                $data['status'] = 'Enabled';
-                break;
-            case Status::STATUS_DISABLED:
-                $data['status'] = 'Disabled';
-                break;
-        }
+        $data['visibility'] = $this->getVisibilityLabel($model->getVisibility());
+        $data['status'] = $this->getStatusLabel($model->getStatus());
 
         return $data;
     }
