@@ -94,15 +94,10 @@ class View implements ResolverInterface, AdminAuthorizationInterface
         /** @var Attribute $attribute */
         foreach ($this->getAttributesForGroups(array_keys($attributeGroups)) as $attribute) {
             $attributeValue = $product->getData($attribute->getAttributeCode());
-            if (is_array($attributeValue)) {
-                // todo: handle multidimensional
-                continue;
-            }
-
             $attributesByGroupId[$attribute->getAttributeGroupId()][$attribute->getAttributeId()] = [
                 'label' => $attribute->getName(),
-                'type' => $attribute->getFrontendInput(),
-                'value' => $attributeValue,
+                'type' => $attribute->getFrontendInput() ?? 'text',
+                'value' => is_array($attributeValue) ? null : $attributeValue, // todo: handle multidimensional
                 'code' => $attribute->getAttributeCode(),
                 'options' => $this->getFlattenedOptions($attribute->getOptions())
             ];
