@@ -10,7 +10,6 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Visibility;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\DataObject;
-use Magento\Tests\NamingConvention\true\string;
 
 class ItemTransformer implements ItemTransformerInterface
 {
@@ -52,8 +51,8 @@ class ItemTransformer implements ItemTransformerInterface
         /** @var $model Product */
         $data['price'] = $this->currency->format($model->getPrice(), [], false);
         $data['quantity'] = (int) $model->getQty();
-        $data['visibility'] = $this->getVisibilityLabel($model->getVisibility());
-        $data['status'] = $this->getStatusLabel($model->getStatus());
+        $data['visibility'] = $this->getVisibilityLabel((int) $model->getVisibility());
+        $data['status'] = $this->getStatusLabel((int) $model->getStatus());
 
         return $data;
     }
