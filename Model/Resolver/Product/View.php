@@ -60,6 +60,7 @@ class View implements ResolverInterface, AdminAuthorizationInterface
         return $this->attributeRepository->getList(
             $this->searchCriteriaBuilder
                 ->addFilter('attribute_group_id', $attributeGroupIds, 'in')
+                ->addFilter('is_visible', 1)
                 ->addSortOrder($this->sortOrderBuilder->setField('sort_order')->setAscendingDirection()->create())
                 ->create()
         )->getItems();
