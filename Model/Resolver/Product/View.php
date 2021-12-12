@@ -100,7 +100,8 @@ class View implements ResolverInterface, AdminAuthorizationInterface
                 'type' => $attribute->getFrontendInput() ?? 'text',
                 'value' => is_array($attributeValue) ? null : $attributeValue, // todo: handle multidimensional
                 'code' => $attribute->getAttributeCode(),
-                'options' => $this->getFlattenedOptions($attribute->getOptions())
+                'options' => $this->getFlattenedOptions($attribute->getOptions()),
+                'required' => (bool) $attribute->getIsRequired()
             ];
         }
 
