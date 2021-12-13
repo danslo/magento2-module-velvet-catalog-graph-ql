@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Danslo\VelvetCatalogGraphQl\Model\Resolver\Product;
 
 use Danslo\VelvetGraphQl\Api\AdminAuthorizationInterface;
+use Magento\Bundle\Model\Product\Type as BundleProductType;
 use Magento\Catalog\Api\ProductAttributeGroupRepositoryInterface;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -20,6 +21,10 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 class View implements ResolverInterface, AdminAuthorizationInterface
 {
+    const TYPE_SPECIFIC_GROUPS = [
+        'Bundle Items' => BundleProductType::TYPE_CODE
+    ];
+
     private ProductRepositoryInterface $productRepository;
     private ProductAttributeGroupRepositoryInterface $attributeGroupRepository;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
@@ -94,6 +99,12 @@ class View implements ResolverInterface, AdminAuthorizationInterface
         $attributesByGroupId = [];
         /** @var Attribute $attribute */
         foreach ($this->getAttributesForGroups(array_keys($attributeGroups)) as $attribute) {
+            if ($attribute->getApplyTo()) {
+                if (!in_array($product->getTypeId(), $attribute->getApplyTo())) {
+                    continue;
+                }
+            }
+
             $attributeValue = $product->getData($attribute->getAttributeCode());
             $attributesByGroupId[$attribute->getAttributeGroupId()][$attribute->getAttributeId()] = [
                 'label' => $attribute->getDefaultFrontendLabel(),
@@ -109,9 +120,19 @@ class View implements ResolverInterface, AdminAuthorizationInterface
 
         /** @var Group $attributeGroup */
         foreach ($attributeGroups as $attributeGroup) {
+            $attributes = $attributesByGroupId[$attributeGroup->getAttributeGroupId()] ?? [];
+            if (count($attributes) === 0) {
+                continue;
+            }
+
+            $typeSpecificGroup = self::TYPE_SPECIFIC_GROUPS[$attributeGroup->getAttributeGroupName()] ?? null;
+            if ($typeSpecificGroup !== null && $product->getTypeId() !== $typeSpecificGroup) {
+                continue;
+            }
+
             $attributeGroupsData[] = [
                 'label' => $attributeGroup->getAttributeGroupName(),
-                'attributes' => $attributesByGroupId[$attributeGroup->getAttributeGroupId()] ?? []
+                'attributes' => $attributes
             ];
         }
 
