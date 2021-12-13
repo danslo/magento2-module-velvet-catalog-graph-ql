@@ -109,10 +109,12 @@ class View implements ResolverInterface, AdminAuthorizationInterface
             $attributesByGroupId[$attribute->getAttributeGroupId()][$attribute->getAttributeId()] = [
                 'label' => $attribute->getDefaultFrontendLabel(),
                 'type' => $attribute->getFrontendInput() ?? 'text',
-                'value' => is_array($attributeValue) ? null : $attributeValue, // todo: handle multidimensional
                 'code' => $attribute->getAttributeCode(),
                 'options' => $this->getFlattenedOptions($attribute->getOptions()),
-                'required' => (bool) $attribute->getIsRequired()
+                'required' => (bool) $attribute->getIsRequired(),
+
+                // todo: handle multidimensional
+                'value' => is_array($attributeValue) ? null : ($attributeValue ?? $attribute->getDefaultValue()),
             ];
         }
 
