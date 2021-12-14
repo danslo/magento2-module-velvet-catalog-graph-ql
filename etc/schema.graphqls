@@ -55,11 +55,16 @@ type VelvetTierPriceAttributeValue {
     prices: [VelvetTierPrice!]!
 }
 
+type VelvetCategoryIdsAttributeValue {
+    category_ids: [Int!]!
+}
+
 union VelvetAttributeValue @typeResolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\AttributeValueUnionResolver") =
     | VelvetStockAttributeValue
     | VelvetStringAttributeValue
     | VelvetGalleryAttributeValue
     | VelvetTierPriceAttributeValue
+    | VelvetCategoryIdsAttributeValue
 
 type VelvetAttribute {
     label: String!
@@ -78,7 +83,6 @@ type VelvetAttributeGroup {
 type VelvetProduct {
     attribute_groups: [VelvetAttributeGroup!]!
     categories: [CategoryTree!]! @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\CategoryList")
-    category_ids: [Int!]!
 }
 
 type Query {

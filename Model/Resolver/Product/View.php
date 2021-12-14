@@ -109,7 +109,7 @@ class View implements ResolverInterface, AdminAuthorizationInterface
             if ($attribute->getAttributeCode() === 'tier_price') {
                 $attributeValue = ['prices' => $attributeValue];
             } elseif ($attribute->getAttributeCode() === 'category_ids') {
-                $attributeValue = null; // handled separately
+                $attributeValue = ['category_ids' => $attributeValue];
             }
 
             $attributesByGroupId[$attribute->getAttributeGroupId()][$attribute->getAttributeId()] = [
@@ -149,7 +149,6 @@ class View implements ResolverInterface, AdminAuthorizationInterface
             'attribute_set_id' => $product->getAttributeSetId(),
             'type_id' => $product->getTypeId(),
             'sku' => $product->getSku(),
-            'category_ids' => $product->getCategoryCollection()->getColumnValues('entity_id'),
             'attribute_groups' => $attributeGroupsData
         ];
     }
