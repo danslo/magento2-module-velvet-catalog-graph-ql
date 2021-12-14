@@ -143,6 +143,7 @@ class View implements ResolverInterface, AdminAuthorizationInterface
             'attribute_set_id' => $product->getAttributeSetId(),
             'type_id' => $product->getTypeId(),
             'sku' => $product->getSku(),
+            'category_ids' => $product->getCategoryCollection()->getColumnValues('entity_id'),
             'attribute_groups' => $attributeGroupsData
         ];
     }

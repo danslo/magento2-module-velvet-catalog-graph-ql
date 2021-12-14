@@ -36,6 +36,7 @@ type VelvetAttributeGroup {
 type VelvetProduct {
     attribute_groups: [VelvetAttributeGroup!]!
     categories: [CategoryTree!]! @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\CategoryList")
+    category_ids: [Int!]!
 }
 
 type Query {
