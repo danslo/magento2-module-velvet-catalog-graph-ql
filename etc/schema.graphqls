@@ -19,9 +19,51 @@ type VelvetAttributeOption {
     value: String
 }
 
+type VelvetStockAttributeValue {
+    is_in_stock: Boolean!
+    qty: Float!
+}
+
+type VelvetStringAttributeValue {
+    value: String
+}
+
+type VelvetGalleryImage {
+    value_id: Int!
+    file: String!
+    media_type: String!
+    position: Int!
+    disabled: Boolean!
+}
+
+type VelvetGalleryAttributeValue {
+    images: [VelvetGalleryImage!]!
+}
+
+type VelvetTierPrice {
+    price_id: Int!
+    website_id: Int!
+    all_groups: Boolean!
+    cust_group: Int!
+    price: Float!
+    price_qty: Float!
+    percentage_value: Float
+    website_price: Float!
+}
+
+type VelvetTierPriceAttributeValue {
+    prices: [VelvetTierPrice!]!
+}
+
+union VelvetAttributeValue @typeResolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\AttributeValueUnionResolver") =
+    | VelvetStockAttributeValue
+    | VelvetStringAttributeValue
+    | VelvetGalleryAttributeValue
+    | VelvetTierPriceAttributeValue
+
 type VelvetAttribute {
     label: String!
-    value: String
+    value: VelvetAttributeValue!
     type: String!
     code: String!
     required: Boolean!

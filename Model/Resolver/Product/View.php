@@ -106,15 +106,21 @@ class View implements ResolverInterface, AdminAuthorizationInterface
             }
 
             $attributeValue = $product->getData($attribute->getAttributeCode());
+            if ($attribute->getAttributeCode() === 'tier_price') {
+                $attributeValue = ['prices' => $attributeValue];
+            } elseif ($attribute->getAttributeCode() === 'category_ids') {
+                $attributeValue = null; // handled separately
+            }
+
             $attributesByGroupId[$attribute->getAttributeGroupId()][$attribute->getAttributeId()] = [
                 'label' => $attribute->getDefaultFrontendLabel(),
                 'type' => $attribute->getFrontendInput() ?? 'text',
                 'code' => $attribute->getAttributeCode(),
                 'options' => $this->getFlattenedOptions($attribute->getOptions()),
                 'required' => (bool) $attribute->getIsRequired(),
-
-                // todo: handle multidimensional
-                'value' => is_array($attributeValue) ? null : ($attributeValue ?? $attribute->getDefaultValue()),
+                'value' => is_array($attributeValue) && count($attributeValue) ?
+                    $attributeValue :
+                    ['value' => ($attributeValue ?? $attribute->getDefaultValue())],
             ];
         }
 
