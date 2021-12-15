@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Danslo\VelvetCatalogGraphQl\Model\Resolver\Product;
 
 use Danslo\VelvetGraphQl\Api\AdminAuthorizationInterface;
-use Magento\Bundle\Model\Product\Type as BundleProductType;
 use Magento\Catalog\Api\ProductAttributeGroupRepositoryInterface;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -21,10 +20,6 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 class View implements ResolverInterface, AdminAuthorizationInterface
 {
-    const TYPE_SPECIFIC_GROUPS = [
-        'Bundle Items' => BundleProductType::TYPE_CODE
-    ];
-
     private ProductRepositoryInterface $productRepository;
     private ProductAttributeGroupRepositoryInterface $attributeGroupRepository;
     private SearchCriteriaBuilder $searchCriteriaBuilder;
@@ -130,11 +125,6 @@ class View implements ResolverInterface, AdminAuthorizationInterface
         foreach ($attributeGroups as $attributeGroup) {
             $attributes = $attributesByGroupId[$attributeGroup->getAttributeGroupId()] ?? [];
             if (count($attributes) === 0) {
-                continue;
-            }
-
-            $typeSpecificGroup = self::TYPE_SPECIFIC_GROUPS[$attributeGroup->getAttributeGroupName()] ?? null;
-            if ($typeSpecificGroup !== null && $product->getTypeId() !== $typeSpecificGroup) {
                 continue;
             }
 
