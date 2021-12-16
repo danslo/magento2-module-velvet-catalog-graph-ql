@@ -101,38 +101,41 @@ class View implements ResolverInterface, AdminAuthorizationInterface
         return ['value' => ($attributeValue ?? $attribute->getDefaultValue())];
     }
 
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    private function getAttributeData(ProductInterface $product, AttributeInterface $attribute): array
     {
-        $productId = $args['product_id'] ?? null;
-        if ($productId === null) {
-            throw new GraphQlInputException(__('Product ID must be specified.'));
-        }
+        return [
+            'label' => $attribute->getDefaultFrontendLabel(),
+            'type' => $attribute->getFrontendInput() ?? 'text',
+            'code' => $attribute->getAttributeCode(),
+            'options' => $this->getFlattenedOptions($attribute->getOptions()),
+            'required' => $attribute->getIsRequired(),
+            'value' => $this->getAttributeValue($product, $attribute)
+        ];
+    }
 
-        $product = $this->productRepository->getById($productId);
-
-        $attributeGroups = $this->getAttributeGroupsForSet((int) $product->getAttributeSetId());
-
+    private function getAttributesByGroupIds(array $attributeGroupIds, ProductInterface $product): array
+    {
         $attributesByGroupId = [];
         /** @var Attribute $attribute */
-        foreach ($this->getAttributesForGroups(array_keys($attributeGroups)) as $attribute) {
+        foreach ($this->getAttributesForGroups($attributeGroupIds) as $attribute) {
             if ($attribute->getApplyTo()) {
                 if (!in_array($product->getTypeId(), $attribute->getApplyTo())) {
                     continue;
                 }
             }
 
-            $attributesByGroupId[$attribute->getAttributeGroupId()][$attribute->getAttributeId()] = [
-                'label' => $attribute->getDefaultFrontendLabel(),
-                'type' => $attribute->getFrontendInput() ?? 'text',
-                'code' => $attribute->getAttributeCode(),
-                'options' => $this->getFlattenedOptions($attribute->getOptions()),
-                'required' => (bool) $attribute->getIsRequired(),
-                'value' => $this->getAttributeValue($product, $attribute)
-            ];
+            $attributesByGroupId[$attribute->getAttributeGroupId()][$attribute->getAttributeId()] =
+                $this->getAttributeData($product, $attribute);
         }
+        return $attributesByGroupId;
+    }
+
+    private function getAttributeGroupsData(ProductInterface $product): array
+    {
+        $attributeGroups = $this->getAttributeGroupsForSet((int) $product->getAttributeSetId());
+        $attributesByGroupId = $this->getAttributesByGroupIds(array_keys($attributeGroups), $product);
 
         $attributeGroupsData = [];
-
         /** @var Group $attributeGroup */
         foreach ($attributeGroups as $attributeGroup) {
             $attributes = $attributesByGroupId[$attributeGroup->getAttributeGroupId()] ?? [];
@@ -145,13 +148,23 @@ class View implements ResolverInterface, AdminAuthorizationInterface
                 'attributes' => $attributes
             ];
         }
+        return $attributeGroupsData;
+    }
 
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
+        $productId = $args['product_id'] ?? null;
+        if ($productId === null) {
+            throw new GraphQlInputException(__('Product ID must be specified.'));
+        }
+
+        $product = $this->productRepository->getById($productId);
         return [
             'entity_id' => $product->getId(),
             'attribute_set_id' => $product->getAttributeSetId(),
             'type_id' => $product->getTypeId(),
             'sku' => $product->getSku(),
-            'attribute_groups' => $attributeGroupsData
+            'attribute_groups' => $this->getAttributeGroupsData($product)
         ];
     }
 }
