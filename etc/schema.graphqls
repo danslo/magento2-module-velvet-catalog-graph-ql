@@ -98,7 +98,6 @@ input ProductInput {
     entity_id: Int
     attribute_set_id: Int!
     type_id: String!
-    sku: String!
     attributes: [AttributeValueInput!]!
 }
 
