@@ -14,7 +14,7 @@ class AttributeValueUnionResolver implements TypeResolverInterface
             return 'VelvetStockAttributeValue';
         } elseif (isset($data['images'])) {
             return 'VelvetGalleryAttributeValue';
-        } elseif (isset($data['prices'])) {
+        } elseif (isset($data['tier_price'])) {
             return 'VelvetTierPriceAttributeValue';
         }  elseif (isset($data['category_ids'])) {
             return 'VelvetCategoryIdsAttributeValue';

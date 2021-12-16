@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Danslo\VelvetCatalogGraphQl\Model\Resolver\Product;
 
 use Danslo\VelvetGraphQl\Api\AdminAuthorizationInterface;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductAttributeGroupRepositoryInterface;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Model\Attribute;
 use Magento\Eav\Model\Entity\Attribute\Group;
 use Magento\Eav\Model\Entity\Attribute\Option;
@@ -80,6 +82,25 @@ class View implements ResolverInterface, AdminAuthorizationInterface
         return $outputOptions;
     }
 
+    private function getAttributeValue(ProductInterface $product, AttributeInterface $attribute): array
+    {
+        $attributeValue = $product->getData($attribute->getAttributeCode());
+
+        // Multidimensional attributes that require their own key.
+        switch ($attribute->getAttributeCode()) {
+            case 'tier_price':
+            case 'category_ids':
+            return [$attribute->getAttributeCode() => $attributeValue];
+        }
+
+        // Regular multidimensional that are already formatted correctly.
+        if (is_array($attributeValue) && count($attributeValue)) {
+            return $attributeValue;
+        }
+
+        return ['value' => ($attributeValue ?? $attribute->getDefaultValue())];
+    }
+
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
         $productId = $args['product_id'] ?? null;
@@ -100,22 +121,13 @@ class View implements ResolverInterface, AdminAuthorizationInterface
                 }
             }
 
-            $attributeValue = $product->getData($attribute->getAttributeCode());
-            if ($attribute->getAttributeCode() === 'tier_price') {
-                $attributeValue = ['prices' => $attributeValue];
-            } elseif ($attribute->getAttributeCode() === 'category_ids') {
-                $attributeValue = ['category_ids' => $attributeValue];
-            }
-
             $attributesByGroupId[$attribute->getAttributeGroupId()][$attribute->getAttributeId()] = [
                 'label' => $attribute->getDefaultFrontendLabel(),
                 'type' => $attribute->getFrontendInput() ?? 'text',
                 'code' => $attribute->getAttributeCode(),
                 'options' => $this->getFlattenedOptions($attribute->getOptions()),
                 'required' => (bool) $attribute->getIsRequired(),
-                'value' => is_array($attributeValue) && count($attributeValue) ?
-                    $attributeValue :
-                    ['value' => ($attributeValue ?? $attribute->getDefaultValue())],
+                'value' => $this->getAttributeValue($product, $attribute)
             ];
         }
 

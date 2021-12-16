@@ -52,7 +52,7 @@ type VelvetTierPrice {
 }
 
 type VelvetTierPriceAttributeValue {
-    prices: [VelvetTierPrice!]!
+    tier_price: [VelvetTierPrice!]!
 }
 
 type VelvetCategoryIdsAttributeValue {
