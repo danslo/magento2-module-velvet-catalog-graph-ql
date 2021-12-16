@@ -89,3 +89,20 @@ type Query {
     productGrid(input: GridInput): GridOutput! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Grid")
     productView(product_id: Int!): VelvetProduct! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\View")
 }
+
+input AttributeValueInput {
+    code: String!
+    value: String
+}
+
+input ProductInput {
+    entity_id: Int
+    attribute_set_id: Int!
+    type_id: String!
+    sku: String!
+    attributes: [AttributeValueInput!]!
+}
+
+type Mutation {
+    productSave(input: ProductInput!): Int! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Save")
+}
