@@ -93,7 +93,7 @@ class View implements ResolverInterface, AdminAuthorizationInterface
             return [$attribute->getAttributeCode() => $attributeValue];
         }
 
-        // Regular multidimensional that are already formatted correctly.
+        // Regular multidimensional that are already structured correctly.
         if (is_array($attributeValue) && count($attributeValue)) {
             return $attributeValue;
         }
