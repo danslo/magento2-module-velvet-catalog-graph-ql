@@ -58,8 +58,7 @@ type VelvetTierPriceAttributeValue {
 type VelvetCategoryIdsAttributeValue {
     category_ids: [Int!]!
 }
-
-union VelvetAttributeValue @typeResolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\AttributeValueUnionResolver") =
+union VelvetAttributeValue @typeResolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Attribute\\ValueUnionResolver") =
     | VelvetStockAttributeValue
     | VelvetStringAttributeValue
     | VelvetGalleryAttributeValue

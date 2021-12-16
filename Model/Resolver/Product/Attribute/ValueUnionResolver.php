@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Danslo\VelvetCatalogGraphQl\Model\Resolver\Product;
+namespace Danslo\VelvetCatalogGraphQl\Model\Resolver\Product\Attribute;
 
 use Magento\Framework\GraphQl\Query\Resolver\TypeResolverInterface;
 
-class AttributeValueUnionResolver implements TypeResolverInterface
+class ValueUnionResolver implements TypeResolverInterface
 {
     public function resolveType(array $data): string
     {
