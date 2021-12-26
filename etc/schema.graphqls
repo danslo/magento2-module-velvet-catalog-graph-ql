@@ -14,11 +14,6 @@ type VelvetGridProduct {
     status: ProductStatus!
 }
 
-type VelvetAttributeOption {
-    label: String!
-    value: String
-}
-
 type VelvetStockAttributeValue {
     is_in_stock: Boolean!
     qty: Float!
@@ -71,7 +66,7 @@ type VelvetAttribute {
     type: String!
     code: String!
     required: Boolean!
-    options: [VelvetAttributeOption!]!
+    options: [Option!]!
 }
 
 type VelvetAttributeGroup {
