@@ -89,7 +89,7 @@ input AttributeValueInput {
     value: String
 }
 
-input ProductInput {
+input VelvetProductInput {
     entity_id: Int
     attribute_set_id: Int!
     type_id: String!
@@ -97,6 +97,6 @@ input ProductInput {
 }
 
 type Mutation {
-    saveProduct(input: ProductInput!): Int! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Save")
+    saveProduct(input: VelvetProductInput!): Int! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Save")
     deleteProduct(product_id: Int!): Boolean @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Entity\\Deleter\\Product")
 }
