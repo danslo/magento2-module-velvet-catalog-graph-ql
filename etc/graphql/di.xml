@@ -16,4 +16,18 @@
             <argument name="itemTransformer" xsi:type="object">Danslo\VelvetCatalogGraphQl\Model\Resolver\Grid\ItemTransformer</argument>
         </arguments>
     </virtualType>
+
+    <virtualType name="Danslo\VelvetCatalogGraphQl\Model\FactoryWrapper\Product" type="Danslo\VelvetGraphQl\Model\FactoryWrapper">
+        <arguments>
+            <argument name="factory" xsi:type="string">Magento\Catalog\Model\ProductFactory</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Danslo\VelvetCatalogGraphQl\Model\Resolver\Entity\Deleter\Product" type="Danslo\VelvetGraphQl\Model\Resolver\Entity\Deleter">
+        <arguments>
+            <argument name="factoryWrapper" xsi:type="object">Danslo\VelvetCatalogGraphQl\Model\FactoryWrapper\Product</argument>
+            <argument name="resourceModel" xsi:type="object">Magento\Catalog\Model\ResourceModel\Product</argument>
+            <argument name="aclResource" xsi:type="string">Magento_Catalog::products</argument>
+        </arguments>
+    </virtualType>
 </config>
