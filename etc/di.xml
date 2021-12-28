@@ -5,6 +5,7 @@
         <arguments>
             <argument name="gridItemTypes" xsi:type="array">
                 <item name="VelvetGridProduct" xsi:type="string">VelvetGridProduct</item>
+                <item name="VelvetCatalogAttribute" xsi:type="string">VelvetCatalogAttribute</item>
             </argument>
         </arguments>
     </type>
@@ -12,8 +13,20 @@
     <virtualType name="Danslo\VelvetCatalogGraphQl\Model\GraphQl\TableReader\Product" type="Danslo\VelvetGraphQl\Model\GraphQl\TableReader">
         <arguments>
             <argument name="schemaType" xsi:type="string">VelvetProduct</argument>
-            <argument name="tableName" xsi:type="string">catalog_product_entity</argument>
+            <argument name="tableNames" xsi:type="array">
+                <item name="catalog_product_entity" xsi:type="string">catalog_product_entity</item>
+            </argument>
             <argument name="generateInputType" xsi:type="boolean">false</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Danslo\VelvetCatalogGraphQl\Model\GraphQl\TableReader\CatalogAttribute" type="Danslo\VelvetGraphQl\Model\GraphQl\TableReader">
+        <arguments>
+            <argument name="schemaType" xsi:type="string">VelvetCatalogAttribute</argument>
+            <argument name="tableNames" xsi:type="array">
+                <item name="eav_attribute" xsi:type="string">eav_attribute</item>
+                <item name="catalog_eav_attribute" xsi:type="string">catalog_eav_attribute</item>
+            </argument>
         </arguments>
     </virtualType>
 
@@ -21,6 +34,7 @@
         <arguments>
             <argument name="readers" xsi:type="array">
                 <item name="productTableReader" xsi:type="object">Danslo\VelvetCatalogGraphQl\Model\GraphQl\TableReader\Product</item>
+                <item name="catalogAttributeTableReader" xsi:type="object">Danslo\VelvetCatalogGraphQl\Model\GraphQl\TableReader\CatalogAttribute</item>
             </argument>
         </arguments>
     </virtualType>

@@ -79,9 +79,12 @@ type VelvetProduct {
     categories: [CategoryTree!]! @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\CategoryList")
 }
 
+type VelvetCatalogAttribute {}
+
 type Query {
     productGrid(input: GridInput): GridOutput! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Grid")
     productView(product_id: Int!): VelvetProduct! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\View")
+    productAttributeGrid(input: GridInput): GridOutput! @resolver(class: "Danslo\\VelvetCatalogGraphQl\\Model\\Resolver\\Product\\Attribute\\Grid")
 }
 
 input AttributeValueInput {

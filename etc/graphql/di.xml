@@ -1,11 +1,19 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Factory Wrappers -->
     <virtualType name="Danslo\VelvetCatalogGraphQl\Model\FactoryWrapper\Product\Grid" type="Danslo\VelvetGraphQl\Model\FactoryWrapper">
         <arguments>
             <argument name="factory" xsi:type="string">Magento\Catalog\Model\ResourceModel\Product\CollectionFactory</argument>
         </arguments>
     </virtualType>
 
+    <virtualType name="Danslo\VelvetCatalogGraphQl\Model\FactoryWrapper\Product\Attribute\Grid" type="Danslo\VelvetGraphQl\Model\FactoryWrapper">
+        <arguments>
+            <argument name="factory" xsi:type="string">Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Grids -->
     <virtualType name="Danslo\VelvetCatalogGraphQl\Model\Resolver\Product\Grid" type="Danslo\VelvetGraphQl\Model\Resolver\Grid">
         <arguments>
             <argument name="defaultOrderField" xsi:type="string">entity_id</argument>
@@ -17,6 +25,16 @@
         </arguments>
     </virtualType>
 
+    <virtualType name="Danslo\VelvetCatalogGraphQl\Model\Resolver\Product\Attribute\Grid" type="Danslo\VelvetGraphQl\Model\Resolver\Grid">
+        <arguments>
+            <argument name="defaultOrderField" xsi:type="string">attribute_id</argument>
+            <argument name="schemaType" xsi:type="string">VelvetCatalogAttribute</argument>
+            <argument name="factoryWrapper" xsi:type="object">Danslo\VelvetCatalogGraphQl\Model\FactoryWrapper\Product\Attribute\Grid</argument>
+            <argument name="aclResource" xsi:type="string">Magento_Catalog::attributes_attributes</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Product CRUD -->
     <virtualType name="Danslo\VelvetCatalogGraphQl\Model\FactoryWrapper\Product" type="Danslo\VelvetGraphQl\Model\FactoryWrapper">
         <arguments>
             <argument name="factory" xsi:type="string">Magento\Catalog\Model\ProductFactory</argument>
